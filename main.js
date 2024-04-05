@@ -1,7 +1,20 @@
-//Initialize the grid
+
+const gameboard = new Array();  
+
 const board = document.querySelector(".board");
-for (let i = 0; i < 9; i++){
-    const cell = document.createElement('img');
-    cell.id = `grid-${i}`;
-    board.appendChild(cell)
-}
+
+player1 = createPlayer(gameboard, 1, '9')
+player2 = createPlayer(gameboard, 2, 'x')
+
+const gameState = (function (player1, player2){
+    let curr_player = 1;
+
+    takeTurn = (event) => {
+        if (curr_player == 1){
+            player1.markCell(event.target.index)
+        }
+    }
+    return {takeTurn}
+})(player1, player2)
+
+initializeBoard(board, gameState.takeTurn)
