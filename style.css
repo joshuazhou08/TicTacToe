@@ -99,8 +99,8 @@ p{
 }
 
 img[id ^= "grid"]{
-    width: calc(var(--length)/3);
-    height: 0;
-    padding-bottom: calc(var(--length)/3);
-    background-color: white;
+  width: calc(var(--length)/3);
+  height: calc(var(--length)/3);
+  background-color: white;
+  border: none;
 }
