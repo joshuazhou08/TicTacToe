@@ -2,13 +2,13 @@
 
 
 //frontend board for initializing graphics
-function initializeBoard(board, clickFunction){
+function initializeBoard(gameboard, board, clickFunction){
+    gameboard.splice(0, gameboard.length)
     for (let i = 0; i < 9; i++){
         const cell = document.createElement('img');
-        cell.src = '';
         cell.id = `grid-${i}`;
         cell.index = i;
-        cell.alt = '';
+        cell.className = 'grid-cell'
         cell.addEventListener('click', (clickFunction));
         board.appendChild(cell);
         gameboard.push(cell);                   //use gameboard[i] to access a cell at index i
@@ -44,7 +44,7 @@ function checkRows(gameboard) {
             const other_rows = [gameboard[i + 1].player, gameboard[i + 2].player];
             if (other_rows.every(player => player == curr_player)) {
                 console.log(`${curr_player} wins!`);
-                return; // Break out of the function after alerting
+                return true; // Break out of the function after alerting
             }
         }
     }
@@ -57,7 +57,7 @@ function checkColumn(gameboard) {
             const other_rows = [gameboard[i + 3].player, gameboard[i + 6].player];
             if (other_rows.every(player => player == curr_player)) {
                 console.log(`${curr_player} wins!`);
-                return; // Break out of the function after alerting
+                return true; // Break out of the function after alerting
             }
         }
     }
@@ -70,7 +70,7 @@ function checkDiagonals(gameboard) {
             const other_rows = [gameboard[4].player, gameboard[i == 0? 8 : 6].player];
             if (other_rows.every(player => player == curr_player)) {
                 console.log(`${curr_player} wins!`);
-                return; // Break out of the function after alerting
+                return true; // Break out of the function after alerting
             }
         }
     }
@@ -79,7 +79,12 @@ function checkDiagonals(gameboard) {
 //checks rows, columns, and diagonal
 
 function checkAll(gameboard){
-    checkColumn(gameboard);
-    checkRows(gameboard)
-    checkDiagonals(gameboard)
+    const cols = checkColumn(gameboard);
+    const rows = checkRows(gameboard);
+    const diagonals = checkDiagonals(gameboard);
+    if (cols || rows || diagonals){
+        const cells = Array.from(document.querySelectorAll('.grid-cell'))
+        cells.forEach((cell) => cell.remove())
+        initializeBoard(gameboard, board, gameState.takeTurn)
+    }
 }
