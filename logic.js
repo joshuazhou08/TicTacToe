@@ -27,9 +27,59 @@ function createPlayer(gameboard, id, img){
     const markCell = (index) => {
         gameboard[index].src = `${img}`;
         gameboard[index].status = "clicked";
-        console.log("registered click")
+        gameboard[index].player = id;
+        console.log("registered click");
+        setTimeout(()=> checkAll(gameboard), 1000)
+
     } 
     return {name, id, img, markCell}
 }
 
 
+//check winner given the gameboard
+function checkRows(gameboard) {
+    for (let i = 0; i < gameboard.length; i += 3) {
+        const curr_player = gameboard[i].player;
+        if (curr_player) {
+            const other_rows = [gameboard[i + 1].player, gameboard[i + 2].player];
+            if (other_rows.every(player => player == curr_player)) {
+                console.log(`${curr_player} wins!`);
+                return; // Break out of the function after alerting
+            }
+        }
+    }
+}
+
+function checkColumn(gameboard) {
+    for (let i = 0; i < 3; i ++) {
+        const curr_player = gameboard[i].player;
+        if (curr_player) {
+            const other_rows = [gameboard[i + 3].player, gameboard[i + 6].player];
+            if (other_rows.every(player => player == curr_player)) {
+                console.log(`${curr_player} wins!`);
+                return; // Break out of the function after alerting
+            }
+        }
+    }
+}
+
+function checkDiagonals(gameboard) {
+    for (let i = 0; i < 3; i += 2) {
+        const curr_player = gameboard[i].player;
+        if (curr_player) {
+            const other_rows = [gameboard[4].player, gameboard[i == 0? 8 : 6].player];
+            if (other_rows.every(player => player == curr_player)) {
+                console.log(`${curr_player} wins!`);
+                return; // Break out of the function after alerting
+            }
+        }
+    }
+}
+
+//checks rows, columns, and diagonal
+
+function checkAll(gameboard){
+    checkColumn(gameboard);
+    checkRows(gameboard)
+    checkDiagonals(gameboard)
+}
